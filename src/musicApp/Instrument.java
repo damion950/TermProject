@@ -56,6 +56,13 @@ public class Instrument
 	 * between them with something like (keyDist + keyWidth) * 3, and start highlighting there.
 	 */
 	
+	public Instrument()
+	{
+		this.image = null;
+		this.settings = null;
+		this.instrumentName = "";
+	}
+	
 	public Instrument(BufferedImage image, Notes notes, Settings settings, String name)
 	{
 		this.image = image;
