@@ -4,7 +4,7 @@ import java.awt.Image;
 
 public class Instrument
 {
-	//private Image image;
+	private Image image;
 	private Notes notes;
 	private Settings settings;
 	private String instrumentName;
