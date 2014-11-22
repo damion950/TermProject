@@ -2,9 +2,9 @@ package musicApp;
 
 public class Settings
 {
-	int tempo, volume;
-	SoundBank soundBank;
-	String octave;
+	private int tempo, volume;
+	private SoundBank soundBank;
+	private String octave;
 	
 	public int getTempo()
 	{

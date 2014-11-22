@@ -1,6 +1,5 @@
 package musicApp;
 
-import java.awt.Dimension;
 import java.io.IOException;
 
 public class MusicAppDriver

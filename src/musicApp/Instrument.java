@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 public class Instrument
 {
 	private BufferedImage image;
-	private Notes notes;
+	private Octave octave;
 	private Settings settings;
 	private String instrumentName;
 	
@@ -14,9 +14,9 @@ public class Instrument
 		return image;
 	}
 	
-	public Notes getNotes()
+	public Octave getOctave()
 	{
-		return notes;
+		return octave;
 	}
 	
 	public Settings getSettings()
@@ -34,9 +34,9 @@ public class Instrument
 		image = i;
 	}
 	
-	public void setNotes(Notes n)
+	public void setOctave(Octave o)
 	{
-		notes = n;
+		octave = o;
 	}
 	
 	public void setSettings(Settings s)
@@ -63,10 +63,10 @@ public class Instrument
 		this.instrumentName = "";
 	}
 	
-	public Instrument(BufferedImage image, Notes notes, Settings settings, String name)
+	public Instrument(BufferedImage image, Octave octave, Settings settings, String name)
 	{
 		this.image = image;
-		this.notes = notes;
+		this.octave = octave;
 		this.settings = settings;
 		this.instrumentName = name;
 	}
