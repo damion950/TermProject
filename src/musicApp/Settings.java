@@ -4,7 +4,6 @@ public class Settings
 {
 	private int tempo, volume;
 	private SoundBank soundBank;
-	private String octave;
 	
 	public int getTempo()
 	{
@@ -21,11 +20,6 @@ public class Settings
 		return soundBank;
 	}
 	
-	public String getOctave()
-	{
-		return octave;
-	}
-	
 	public void setTempo(int t)
 	{
 		tempo = t;
@@ -39,10 +33,5 @@ public class Settings
 	public void setSoundBank(SoundBank sb)
 	{
 		soundBank = sb;
-	}
-	
-	public void setOctave(String o)
-	{
-		octave = o;
 	}
 }

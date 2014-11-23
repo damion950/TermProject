@@ -1,5 +1,6 @@
 package musicApp;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -10,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -19,11 +22,12 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+@SuppressWarnings("serial")
 public class Window extends JFrame
 {
 	private Instrument instrument;
 	private Settings settings;
-	private JPanel currentPanel;
+	private JPanel currentPanels[] = new JPanel[3];
 	int winX, winY;
 	
 	public Instrument getInstrument()
@@ -43,14 +47,19 @@ public class Window extends JFrame
 		JLabel lblWelcome = new JLabel();
 		JButton btnPiano = new JButton();
 		
-		menuPanel.setLayout(null);
+		this.setMinimumSize(new Dimension(550,475));
+		menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
 		
 		lblWelcome.setBounds(365, 60, 280, 25);
 		lblWelcome.setText("Welcome! Please select an instrument below.");
+		lblWelcome.setAlignmentX(Component.CENTER_ALIGNMENT);
 		menuPanel.add(lblWelcome);
+		
+		menuPanel.add(Box.createRigidArea(new Dimension(0,350)));
 		
 		btnPiano.setBounds(450, 400, 85, 35);
 		btnPiano.setText("Piano");
+		btnPiano.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnPiano.addActionListener(new ActionListener()
 		{
 			@Override
@@ -66,9 +75,10 @@ public class Window extends JFrame
 							"reinstall the application.");
 					e1.printStackTrace();
 				}
-				instrument.setImage(img);
 				
+				instrument.setImage(img);
 				remove(menuPanel);
+				
 				try {
 						displayInstrument();
 				} catch (IOException e1) {
@@ -80,8 +90,8 @@ public class Window extends JFrame
 			
 		this.setTitle("Welcome!");
 		this.add(menuPanel);
-		this.currentPanel = menuPanel;
-		update();
+		this.currentPanels[0] = menuPanel;
+		update(1);
 	}
 	
 	//Display the window for this instrument
@@ -92,6 +102,7 @@ public class Window extends JFrame
 		JLabel lblScales = new JLabel();
 		JLabel lblChords = new JLabel();
 		JLabel lblSongs = new JLabel();
+		JLabel lblTones = new JLabel();
 		final JSlider sliderTempo = new JSlider(0, 100, 30);
 		final JSlider sliderVolume = new JSlider(0, 100, 30);
 		//Probably should be attached to instrument or something to be more generic
@@ -99,13 +110,16 @@ public class Window extends JFrame
 		JComboBox<String> comboScales = new JComboBox<String>(comboScalesItems);
 		String comboChordsItems[] = {"C Chord", "D Chord"};
 		JComboBox<String> comboChords = new JComboBox<String>(comboChordsItems);
-		String comboSongsItems[] = {"Für Elise", "Greensleeves"};
+		String comboSongsItems[] = {"Fur Elise", "Greensleeves"};
 		JComboBox<String> comboSongs = new JComboBox<String>(comboSongsItems);
+		String comboTonesItems[] = {"Piano", "Guitar"};
+		JComboBox<String> comboTones = new JComboBox<String>(comboTonesItems);
 		JButton btnPlayScales = new JButton();
 		JButton btnPlayChords = new JButton();
 		JButton btnPlaySongs = new JButton();
+		JButton btnSetTones = new JButton();
 		final BufferedImage img = instrument.getImage();
-		
+		OptionsPanel optionsPanel = new OptionsPanel(), optionsPanel1 = new OptionsPanel();
 		JPanel instrumentPanel = new JPanel() {
 	        @Override
 	        protected void paintComponent(Graphics g)
@@ -114,6 +128,15 @@ public class Window extends JFrame
 	            g.drawImage(img, ((winX - img.getWidth()) / 2), ((winY - img.getHeight()) / 3), null);
 	        }
 	    }; 
+	    
+	    //Keep all components on screen and visible
+	    this.setMinimumSize(new Dimension(905,410));
+	    
+	    FlowLayout layout = new FlowLayout();
+	    optionsPanel.setLayout(layout);
+	    optionsPanel1.setLayout(layout);
+	    instrumentPanel.setLayout(layout);
+	    optionsPanel.setPreferredSize(new Dimension(200,80));
 	    
 	    sliderTempo.addChangeListener(new ChangeListener() {
 			@Override
@@ -130,86 +153,100 @@ public class Window extends JFrame
 				settings.setVolume(sliderVolume.getValue());
 			}
 	    });
-	    
-	    FlowLayout layout = new FlowLayout();
-        instrumentPanel.setLayout(layout);
         
         lblTempo.setBounds(125, 40, 60, 25);
 		lblTempo.setText("Tempo");
-		instrumentPanel.add(lblTempo);
+		optionsPanel1.add(lblTempo);
         
         sliderTempo.setBounds(105, 60, 85, 35);
-		instrumentPanel.add(sliderTempo);
+		optionsPanel1.add(sliderTempo);
 		
 		lblVolume.setBounds(270, 40, 60, 25);
 		lblVolume.setText("Volume");
-		instrumentPanel.add(lblVolume);
+		optionsPanel1.add(lblVolume);
 		
 		sliderVolume.setBounds(250, 60, 85, 35);
-		instrumentPanel.add(sliderVolume);		
+		optionsPanel1.add(sliderVolume);		
 		
 		lblScales.setBounds(415, 40, 60, 25);
 		lblScales.setText("Scales");
-		instrumentPanel.add(lblScales);
+		optionsPanel.add(lblScales);
 		
 		comboScales.setPreferredSize(new Dimension(100,25));
-		instrumentPanel.add(comboScales);
+		optionsPanel.add(comboScales);
 		
 		btnPlayScales.setPreferredSize(new Dimension(60,25));
 		btnPlayScales.setText("Play");
-		instrumentPanel.add(btnPlayScales);
+		optionsPanel.add(btnPlayScales);
 		
 		lblChords.setPreferredSize(new Dimension(50,25));
 		lblChords.setText("Chords");
-		instrumentPanel.add(lblChords);
+		optionsPanel.add(lblChords);
 		
 		comboChords.setPreferredSize(new Dimension(100,25));
-		instrumentPanel.add(comboChords);
+		optionsPanel.add(comboChords);
 		
 		btnPlayChords.setPreferredSize(new Dimension(60,25));
 		btnPlayChords.setText("Play");
-		instrumentPanel.add(btnPlayChords);
+		optionsPanel.add(btnPlayChords);
 		
 		lblSongs.setPreferredSize(new Dimension(50,25));
 		lblSongs.setText("Songs");
-		instrumentPanel.add(lblSongs);
+		optionsPanel.add(lblSongs);
 		
 		comboSongs.setPreferredSize(new Dimension(100,25));
-		instrumentPanel.add(comboSongs);
+		optionsPanel.add(comboSongs);
 		
 		btnPlaySongs.setPreferredSize(new Dimension(60,25));
 		btnPlaySongs.setText("Play");
-		instrumentPanel.add(btnPlaySongs);
+		optionsPanel.add(btnPlaySongs);
+		
+		lblTones.setPreferredSize(new Dimension(50,25));
+		lblTones.setText("Tones");
+		optionsPanel.add(lblTones);
+		
+		comboTones.setPreferredSize(new Dimension(100,25));
+		optionsPanel.add(comboTones);
+		
+		btnSetTones.setPreferredSize(new Dimension(60,25));
+		btnSetTones.setText("Set");
+		optionsPanel.add(btnSetTones);
         
 		this.setTitle(instrument.getInstrumentName());
+		this.add(optionsPanel);
+		this.add(optionsPanel1);
 		this.add(instrumentPanel);
-		
-		instrumentPanel.repaint();
-		instrumentPanel.revalidate();
 			
-		currentPanel = instrumentPanel;
-		update();
+		currentPanels[0] = optionsPanel;
+		currentPanels[1] = optionsPanel1;
+		currentPanels[2] = instrumentPanel;
+		update(3);
 	}
 	
-	//Update the current panel
-	public void update()
+	//Update the specified number of current panels
+	public void update(int panels)
 	{
-		currentPanel.repaint();
-		currentPanel.revalidate();
+		for(int i = 0; i < panels; i++)
+		{
+			currentPanels[i].repaint();
+			currentPanels[i].revalidate();
+		}
 	}
 	
-	//Update components when window is resized by overriding Container.validate()
+	//Update instrument image position when window is resized by overriding Container.validate()
 	@Override
 	public void validate()
 	{
 		super.validate();
 		
-		if(currentPanel == null)
-			return;
-		
+		for(int i = 0; i < 3; i++)
+		{
+			if(currentPanels[i] == null)
+				return;
+		}
+	
 		winX = this.getWidth();
 		winY = this.getHeight();
-		this.update();
 	}
 	
 	public Window()
@@ -221,6 +258,7 @@ public class Window extends JFrame
 		this.setSize(new Dimension(winX, winY));
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 		this.setFocusable(true);
 		this.setVisible(true);
 	}
