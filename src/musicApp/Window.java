@@ -69,7 +69,7 @@ public class Window extends JFrame
 				BufferedImage img = null;
 			
 				try {
-					img = ImageIO.read(new File("Art Assets/piano.png"));
+					img = ImageIO.read(new File("res/Art Assets/Piano/piano.png"));
 				} catch (IOException e1) {
 					System.out.println("Error: Missing image asset. Please contact the administrator or " +
 							"reinstall the application.");

@@ -39,12 +39,9 @@ public class TestSoundsForNow implements ActionListener
 		new TestSoundsForNow();
 	}
 	
-	/*************************************************
-	 * Action method
-	 *************************************************/
 	public final void actionPerformed(ActionEvent e){
-		Notes myNote = new Notes();
-		myNote.playNote("Key C");
+		Octave myOctave = new Octave();
+		myOctave.playNote("Key C");
 		//myNote.playNote("Key D");
 		//myNote.playNote("Key A");
 		//myNote.playNote("Key A");
