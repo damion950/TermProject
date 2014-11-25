@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,10 +27,13 @@ import javax.swing.event.ChangeListener;
 @SuppressWarnings("serial")
 public class Window extends JFrame
 {
+	protected boolean highlighting = false;
 	private Instrument instrument;
 	private Settings settings;
 	private JPanel currentPanels[] = new JPanel[3];
 	int winX, winY;
+	int paintX, paintY;
+	BufferedImage imgKey;
 	
 	public Instrument getInstrument()
 	{
@@ -118,16 +123,35 @@ public class Window extends JFrame
 		JButton btnPlayChords = new JButton();
 		JButton btnPlaySongs = new JButton();
 		JButton btnSetTones = new JButton();
-		final BufferedImage img = instrument.getImage();
 		OptionsPanel optionsPanel = new OptionsPanel(), optionsPanel1 = new OptionsPanel();
-		JPanel instrumentPanel = new JPanel() {
+		final BufferedImage img = instrument.getImage();
+		final JPanel instrumentPanel = new JPanel() {
 	        @Override
 	        protected void paintComponent(Graphics g)
 	        {
 	            super.paintComponent(g);
 	            g.drawImage(img, ((winX - img.getWidth()) / 2), ((winY - img.getHeight()) / 3), null);
+	            
+	            if(highlighting)
+	            {
+	            	System.out.println("highlighting..");
+	            	int highlightOffset = ((winX - img.getWidth()) / 2) + instrument.getHighlightOffset();
+	            	imgKey = instrument.getHighlightedKey();
+	            	g.drawImage(imgKey, highlightOffset, ((winY - img.getHeight()) / 3), null);
+	            	highlighting = false;
+	            	try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            	repaint();
+	            }
 	        }
 	    }; 
+	    
+	    //Load images for highlighting keys
+	    instrument.loadImages();
 	    
 	    //Keep all components on screen and visible
 	    this.setMinimumSize(new Dimension(905,410));
@@ -211,6 +235,32 @@ public class Window extends JFrame
 		btnSetTones.setPreferredSize(new Dimension(60,25));
 		btnSetTones.setText("Set");
 		optionsPanel.add(btnSetTones);
+		
+		this.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				System.out.println("Key pressed");
+				if(e.getKeyChar() == 'A' || e.getKeyChar() == 'a')
+				{
+					System.out.println("Key A");
+					instrument.getOctave().setOctaveNum(0);
+					System.out.println("Octave num:" + instrument.getOctave().getOctaveNum());
+					highlighting = true;
+					instrument.highlight("F", instrumentPanel);
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+			}
+		});
         
 		this.setTitle(instrument.getInstrumentName());
 		this.add(optionsPanel);

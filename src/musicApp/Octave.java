@@ -13,19 +13,19 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Octave
 {
-	//The current octave you are on
-	String octave;
+	//The current octave you are on; 0 = mid, -1 left, 1 right
+	int octaveNum;
 	int totalSfiles;
 	HashMap<String, Clip> sounds;
 	
-	public String getOctave()
+	public int getOctaveNum()
 	{
-		return octave;
+		return octaveNum;
 	}
 	
-	public void setOctave(String o)
+	public void setOctaveNum(int o)
 	{
-		octave = o;
+		octaveNum = o;
 	}
 	
 	public void loadSound(String soundName, File soundFile)
@@ -43,6 +43,11 @@ public class Octave
 		
 	}
 	
+	/*public void play(MIDI soundFile) { }
+	 * 
+	 *  Play the sound file and call highlight(String keyName) in sync with notes being played
+	 */
+	
 	public void playNote(String soundName)
 	{
 		try
@@ -58,11 +63,20 @@ public class Octave
 	
 	public Octave()
 	{
-		totalSfiles = 0;
+		this.octaveNum = 0;
+		this.totalSfiles = 0;
 		this.sounds = new HashMap<String, Clip>();
 		
 		try 
 		{
+			/*this.loadSound("Key A", new File(Octave.class.getResource("res/Sound Assets/Key A.wav").toURI()));
+			this.loadSound("Key B", new File(Octave.class.getResource("res/Sound Assets/Key B.wav").toURI()));
+			this.loadSound("Key C", new File(Octave.class.getResource("res/Sound Assets/Key C.wav").toURI()));
+			this.loadSound("Key D", new File(Octave.class.getResource("res/Sound Assets/Key D.wav").toURI()));
+			this.loadSound("Key E", new File(Octave.class.getResource("res/Sound Assets/Key E.wav").toURI()));
+			this.loadSound("Key F", new File(Octave.class.getResource("res/Sound Assets/Key F.wav").toURI()));
+			this.loadSound("Key G", new File(Octave.class.getResource("res/Sound Assets/Key G.wav").toURI()));*/
+			System.out.println("Constructor");
 			this.loadSound("Key A", new File(Octave.class.getResource("/Key A.wav").toURI()));
 			this.loadSound("Key B", new File(Octave.class.getResource("/Key B.wav").toURI()));
 			this.loadSound("Key C", new File(Octave.class.getResource("/Key C.wav").toURI()));
@@ -71,7 +85,7 @@ public class Octave
 			this.loadSound("Key F", new File(Octave.class.getResource("/Key F.wav").toURI()));
 			this.loadSound("Key G", new File(Octave.class.getResource("/Key G.wav").toURI()));
 		} 
-		catch (URISyntaxException e) 
+		catch (URISyntaxException | NullPointerException e) 
 		{
 			//Unable to load sounds
 			e.printStackTrace();
