@@ -9,8 +9,6 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.Clip;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 {
@@ -51,7 +49,7 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 	@Override
 	public void paintComponent(Graphics g)
 	{
-		super.paintComponents(g);
+		super.paintComponent(g);
 		
 		g.drawImage(super.instrument, (this.getWidth() / 2) - (super.instrument.getWidth() / 2), this.getY() + 20, null);
 		
@@ -92,8 +90,13 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 		{
 			if(k.getAssignedKey() == e.getKeyCode())
 			{
-				System.out.println("You pressed key " + k.getName() + " in octave " + k.getOctave());
-				k.getNote().loop(Clip.LOOP_CONTINUOUSLY);
+				//System.out.println("You pressed key " + k.getName() + " in octave " + k.getOctave());
+				if(k.isFlagged())
+				{
+					return;
+				}
+				k.getNote().setMicrosecondPosition(0);
+				k.getNote().start();
 				k.flag();
 				repaint();
 			}
@@ -106,8 +109,8 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 		{
 			if(k.getAssignedKey() == e.getKeyCode())
 			{
-				System.out.println("You released key " + k.getName() + " in octave " + k.getOctave());
-				k.getNote().stop();
+				//System.out.println("You released key " + k.getName() + " in octave " + k.getOctave());
+				//k.getNote().stop();
 				k.unflag();
 				repaint();
 			}

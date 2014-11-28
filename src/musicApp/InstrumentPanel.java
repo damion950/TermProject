@@ -14,5 +14,8 @@ public abstract class InstrumentPanel extends JPanel
 	public abstract void init();
 	
 	@Override
-	public abstract void paintComponent(Graphics g);
+	public void paintComponent(Graphics g)
+	{
+		super.paintComponent(g);
+	}
 }
