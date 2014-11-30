@@ -2,9 +2,11 @@ package musicApp;
 
 import java.io.IOException;
 
+import javax.sound.midi.MidiUnavailableException;
+
 public class MusicAppDriver
 {
-	public static void main(String args[]) throws IOException, InterruptedException
+	public static void main(String args[]) throws IOException, InterruptedException, MidiUnavailableException
 	{
 		Window window = new Window(950, 450, "Music Window");
 	}

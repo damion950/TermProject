@@ -14,6 +14,7 @@ public class Key
 	
 	private int type;
 	private int assignedKey;	
+	private int midiNote;
 	
 	private String name;
 	private String octave;
@@ -22,13 +23,14 @@ public class Key
 	
 	private boolean paintFlag = false;
 	
-	public Key(int type, int assignedKey, String name, String octave, Clip note)
+	public Key(int type, int assignedKey, String name, String octave, Clip note, int midiNote)
 	{
 		this.type = type;
 		this.name = name;
 		this.octave = octave;
 		this.note = note;
 		this.assignedKey = assignedKey;
+		this.midiNote = midiNote;
 	}
 	
 	public boolean isFlagged()
@@ -64,6 +66,11 @@ public class Key
 	public void setAssignedKey(int assignedKey)
 	{
 		this.assignedKey = assignedKey;
+	}
+	
+	public int getMidiNote()
+	{
+		return midiNote;
 	}
 
 	public String getName()

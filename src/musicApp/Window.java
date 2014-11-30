@@ -1,16 +1,21 @@
 package musicApp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+
+import javax.sound.midi.MidiUnavailableException;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
 public class Window extends JFrame
 {
 	private KeyBoardPanel instrument;
-	private OptionsPanel settings;
+	private OptionsPanel options;
+	private SliderPanel settings;
 	
-	public Window(int width, int height, String title)
+	public Window(int width, int height, String title) throws MidiUnavailableException
 	{
 		this.setTitle(title);
 		this.setSize(new Dimension(width, height));
@@ -18,12 +23,19 @@ public class Window extends JFrame
 		this.setLocationRelativeTo(null);
 		
 		this.instrument = new KeyBoardPanel();
-		this.settings = new OptionsPanel();
+		this.options = new OptionsPanel();
+		this.settings = new SliderPanel();
 		this.setFocusable(true);
 		this.addKeyListener(this.instrument);
 		
-		this.add(this.settings, BorderLayout.NORTH);
+		/*options.setBackground(Color.GREEN);
+		instrument.setBackground(Color.YELLOW);
+		this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+		this.add(this.options);
+		this.add(this.instrument);*/
+		this.add(this.options, BorderLayout.NORTH);
 		this.add(this.instrument, BorderLayout.CENTER);
+		this.add(this.settings, BorderLayout.SOUTH);
 		
 		this.setVisible(true);
 	}
