@@ -1,9 +1,12 @@
 package musicApp;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -95,6 +98,11 @@ public class OptionsPanel extends JPanel implements ActionListener
 		this.btnPlaySongs.setPreferredSize(new Dimension(60, 25));
 		this.btnPlaySongs.setText("Play");
 		this.add(btnPlaySongs);
+		this.btnPlaySongs.addActionListener(this);
+		
+		
+		
+		//this.btnPlaySongs.add(myMidFile);
 		
 		this.lblTones.setPreferredSize(new Dimension(50, 25));
 		this.lblTones.setText("Tones");
@@ -129,5 +137,17 @@ public class OptionsPanel extends JPanel implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		//if(e.getSource == this.someObject) {do stuff}
+		try {
+			new testMidi();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InvalidMidiDataException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println("Hellloo in actionPerformed");
 	}
+	
+
 }
