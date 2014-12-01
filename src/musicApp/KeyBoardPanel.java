@@ -4,10 +4,21 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequencer;
+import javax.sound.midi.Synthesizer;
 import javax.sound.sampled.Clip;
 
 public class KeyBoardPanel extends InstrumentPanel implements KeyListener
@@ -16,8 +27,12 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 	private static BufferedImage KEY_CENTER_IMAGE;
 	private static BufferedImage KEY_RIGHT_IMAGE;
 	private static BufferedImage KEY_BLACK_IMAGE;
+	private Synthesizer synth;
+	private MidiChannel channel;
+	//True if the synthesizer is playing a song
+	private static boolean playingFlag = false;
 	
-	public KeyBoardPanel()
+	public KeyBoardPanel() throws MidiUnavailableException
 	{
 		try
 		{
@@ -35,10 +50,29 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 		
 		super.keys = new ArrayList<Key>();
 		
+		synth = MidiSystem.getSynthesizer();
+		synth.open();
+		channel = synth.getChannels()[0];
+		
 		this.init();
 		repaint();
 	}
+	
+	public static void flag()
+	{
+		playingFlag = true;
+	}
+	
+	public static void unflag()
+	{
+		playingFlag = false;
+	}
 
+	public static boolean isFlagged()
+	{
+		return playingFlag;
+	}
+	
 	@Override
 	public void init()
 	{
@@ -69,7 +103,7 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 						g.drawImage(KeyBoardPanel.KEY_CENTER_IMAGE, drawingOffset, this.getY() + 20, null);
 					drawingOffset += Key.KEY_WHITE_OFFSET;
 					break;
-				case Key.KEY_RIGHT:
+ 				case Key.KEY_RIGHT:
 					if(k.isFlagged())
 						g.drawImage(KeyBoardPanel.KEY_RIGHT_IMAGE, drawingOffset, this.getY() + 20, null);
 					drawingOffset += Key.KEY_WHITE_OFFSET;
@@ -83,9 +117,44 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 			}
 		}
 	}
+	
+	//Play requested item sent from event in OptionsPanel - we may want to break this up into
+	//smaller functions later; this is just to get something working
+	public static void play(String item) throws MidiUnavailableException, IOException, InvalidMidiDataException
+	{
+		InputStream is;
+		Sequencer sequencer = MidiSystem.getSequencer();
+		
+		sequencer.open();
+		
+		switch(item)
+		{
+			case "Fur Elise":
+				is = new BufferedInputStream(new FileInputStream(new File("C:/Users/Damion/workspace/Term Project/res/Sound Assets/beethoven-fur_elise.mid")));
+				sequencer.setSequence(is);
+				sequencer.start();
+				break;
+			default:
+				System.err.println("Invalid combo box choice; contact an administrator.");
+		}
+		
+		/*This can stop all keyboard interaction until the song is done, but would be removed if highlighting
+		 * is happening instead
+		 * 
+		 * while(sequencer.isRunning())
+		 * {
+		 * 		Thread.sleep(1000);
+		 * }
+		 * 
+		 * unflag();
+		 */
+	}
 
 	public void keyPressed(KeyEvent e)
 	{
+		if(playingFlag)
+			return;
+		
 		for(Key k : super.keys)
 		{
 			if(k.getAssignedKey() == e.getKeyCode())
@@ -95,8 +164,10 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 				{
 					return;
 				}
-				k.getNote().setMicrosecondPosition(0);
-				k.getNote().start();
+				//k.getNote().setMicrosecondPosition(0);
+				//k.getNote().start();
+				channel.noteOn(k.getMidiNote(), SliderPanel.getVolume());
+				//channel.noteOn(k.getMidiNote(), (OptionsPanel.getVolume()) * 2);
 				k.flag();
 				repaint();
 			}
@@ -105,12 +176,16 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 
 	public void keyReleased(KeyEvent e)
 	{
+		if(playingFlag)
+			return;
+		
 		for(Key k : super.keys)
 		{
 			if(k.getAssignedKey() == e.getKeyCode())
 			{
 				//System.out.println("You released key " + k.getName() + " in octave " + k.getOctave());
 				//k.getNote().stop();
+				channel.noteOff(k.getMidiNote(), 100);
 				k.unflag();
 				repaint();
 			}
