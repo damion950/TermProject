@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -124,7 +125,7 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 	//smaller functions later; this is just to get something working
 	public static void play(String item) throws MidiUnavailableException, IOException, InvalidMidiDataException
 	{
-		InputStream is;
+		InputStream is = null;
 		Sequencer sequencer = MidiSystem.getSequencer();
 		
 		sequencer.open();
@@ -132,7 +133,12 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 		switch(item)
 		{
 			case "Fur Elise":
-				is = new BufferedInputStream(new FileInputStream(new File("C:/Users/Damion/workspace/Term Project/res/Sound Assets/beethoven-fur_elise.mid")));
+			try {
+				is = new BufferedInputStream(new FileInputStream(new File(KeyBoardPanel.class.getResource("/Sound Assets/beethoven-fur_elise.mid").toURI())));
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 				sequencer.setSequence(is);
 				sequencer.start();
 				break;
