@@ -19,7 +19,7 @@ public class Window extends JFrame
 		this.setSize(new Dimension(width, height));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-		
+			
 		this.instrument = new KeyBoardPanel();
 		this.options = new OptionsPanel();
 		this.settings = new SliderPanel();

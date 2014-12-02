@@ -1,12 +1,16 @@
 package musicApp;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.sound.midi.InvalidMidiDataException;
+<<<<<<< HEAD
+=======
 import javax.sound.midi.MidiUnavailableException;
+>>>>>>> e7c30577c6b111d5748ca46e2f33f9f59f9c0125
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -101,8 +105,16 @@ public class OptionsPanel extends JPanel implements ActionListener
 		this.btnPlaySongs.setPreferredSize(new Dimension(60, 25));
 		this.btnPlaySongs.setText("Play");
 		this.add(btnPlaySongs);
+<<<<<<< HEAD
+		this.btnPlaySongs.addActionListener(this);
+		
+		
+		
+		//this.btnPlaySongs.add(myMidFile);
+=======
 		btnPlaySongs.setFocusable(false);
 		btnPlaySongs.addActionListener(this);
+>>>>>>> e7c30577c6b111d5748ca46e2f33f9f59f9c0125
 		
 		this.lblTones.setPreferredSize(new Dimension(50, 25));
 		this.lblTones.setText("Tones");
@@ -119,6 +131,23 @@ public class OptionsPanel extends JPanel implements ActionListener
 
 	public void actionPerformed(ActionEvent e)
 	{
+<<<<<<< HEAD
+=======
+		System.out.println("Button pressed");
+		//if(e.getSource == this.someObject) {do stuff}
+<<<<<<< HEAD
+		try {
+			new testMidi();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InvalidMidiDataException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println("Hellloo in actionPerformed");
+=======
+>>>>>>> d3bb7a1c46e47fa7a4fc9564affb0ad31c0cb770
 		if(e.getSource() == this.btnPlaySongs)
 		{
 			//This needs to go in a "Stop" button later, along with stopping of midi synthesizer
@@ -143,6 +172,7 @@ public class OptionsPanel extends JPanel implements ActionListener
 				e1.printStackTrace();
 			}
 		}
+<<<<<<< HEAD
 		else if(e.getSource() == this.comboTones)
 		{
 			int instrumentNumber = 0;
@@ -183,5 +213,10 @@ public class OptionsPanel extends JPanel implements ActionListener
 			
 			KeyBoardPanel.setTone(instrumentNumber);
 		}
+=======
+>>>>>>> e7c30577c6b111d5748ca46e2f33f9f59f9c0125
+>>>>>>> d3bb7a1c46e47fa7a4fc9564affb0ad31c0cb770
 	}
+	
+
 }
