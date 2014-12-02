@@ -129,12 +129,9 @@ public class OptionsPanel extends JPanel implements ActionListener
 
 	public void actionPerformed(ActionEvent e)
 	{
-
-		System.out.println("Button pressed");
 		//if(e.getSource == this.someObject) {do stuff}
 
-		new TestMidi();
-		System.out.println("Hellloo in actionPerformed");
+		//new TestMidi();
 
 		if(e.getSource() == this.btnPlaySongs)
 		{
