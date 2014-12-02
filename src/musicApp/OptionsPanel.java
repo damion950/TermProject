@@ -22,8 +22,8 @@ public class OptionsPanel extends JPanel implements ActionListener
 	private final String comboSongsItems[] = { "Fur Elise", "Greensleeves" };
 	private final String comboTonesItems[] = { "Accordion", "Cello", "Flute", "Harp", "Organ", "Piano", "Trumpet",
 			"Vibraphone", "Violin"};
-	private static final int PIANO = 0, VIBRAPHONE = 11, ORGAN = 16, ACCORDION = 21, VIOLIN = 40,
-			 CELLO = 42, HARP = 46, TRUMPET = 56, FLUTE = 73;
+	private static int PIANO, VIBRAPHONE, ORGAN = 17, ACCORDION, VIOLIN,
+			 CELLO, HARP, TRUMPET, FLUTE;
 	private final String comboChordsItems[] = { "C Chord", "D Chord" };
 	private final String comboScalesItems[] = { "A Major", "B Major", "C Major", "D Major", "E Major", "F Major", "G Major" };
 	
@@ -42,6 +42,49 @@ public class OptionsPanel extends JPanel implements ActionListener
 	private JLabel lblTones;
 	
 	String item;
+	
+	
+	
+	
+	
+	
+	public static void setInstrument(String instrumentName, int index)
+	{
+		switch(instrumentName)
+		{
+			case "Piano":
+				PIANO = index;
+				break;
+			case "Accordian":
+				ACCORDION = index;
+				break;
+			case "Cello":
+				CELLO = index;
+				break;
+			case "Flute":
+				FLUTE = index;
+				
+				break;
+			case "Harp":
+				HARP = index;
+				break;
+			case "Trumpet":
+				
+				TRUMPET = index;
+				break;
+			case "Organ":
+				ORGAN = index;
+				break;
+			case "Vibraphone":
+					VIBRAPHONE = index;
+				break;
+			case "Violin":
+				VIOLIN = index;
+				break;
+				
+		}
+	}
+	
 	
 	public OptionsPanel()
 	{
@@ -126,6 +169,9 @@ public class OptionsPanel extends JPanel implements ActionListener
 		comboTones.addActionListener(this);
 		
 		this.setFocusable(false);
+		
+		
+		
 	}
 
 	public void actionPerformed(ActionEvent e)
@@ -139,23 +185,25 @@ public class OptionsPanel extends JPanel implements ActionListener
 			switch((String) this.comboChords.getSelectedItem()){
 			
 			case "C Chord":
-				ClipLoader.loadClip("/Sound Assets/Chord A.wav").start();
+				ClipLoader.loadClip("/Sound Assets/A Chord.wav").start();
 				KeyBoardPanel.getInstance().playChordC();
 					break;
 			case "D Chord":
-				ClipLoader.loadClip("/Sound Assets/Chord A.wav").start();
+				ClipLoader.loadClip("/Sound Assets/D Chord.wav").start();
 				KeyBoardPanel.getInstance().playChordD();
 				break;
 			}
 				
 			
 		}
+		
+		
 
-		System.out.println("Button pressed");
+		
 		//if(e.getSource == this.someObject) {do stuff}
 
 		new TestMidi();
-		System.out.println("Hellloo in actionPerformed");
+		
 
 		if(e.getSource() == this.btnPlaySongs)
 		{
@@ -189,7 +237,9 @@ public class OptionsPanel extends JPanel implements ActionListener
 			switch((String) this.comboTones.getSelectedItem())
 			{
 				case "Accordion":
+					
 					instrumentNumber = ACCORDION;
+					//System.out.println(instrumentNumber);
 					break;
 				case "Cello":
 					instrumentNumber = CELLO;
@@ -202,9 +252,11 @@ public class OptionsPanel extends JPanel implements ActionListener
 					break;
 				case "Organ":
 					instrumentNumber = ORGAN;
+					System.out.println(instrumentNumber);
 					break;
 				case "Piano":
 					instrumentNumber = PIANO;
+					
 					break;
 				case "Trumpet":
 					instrumentNumber = TRUMPET;

@@ -32,15 +32,25 @@ public class KeySets
 		keys.add(new Key(Key.KEY_BLACK, KeyEvent.getExtendedKeyCodeForChar('='), "F# Key", "2", ClipLoader.loadClip("/Sound Assets/Key A_edit.wav"), 78));
 		keys.add(new Key(Key.KEY_CENTER, KeyEvent.VK_Z, "G Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 79));
 		keys.add(new Key(Key.KEY_BLACK, KeyEvent.VK_S, "G Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 80));
-		
-		
-		
-		/*keys.add(new Key(Key.KEY_RIGHT, KeyEvent.getExtendedKeyCodeForChar(';'), "E Key", "2", ClipLoader.loadClip("/Sound Assets/Key A_edit.wav"), 76));
-		keys.add(new Key(Key.KEY_LEFT, KeyEvent.VK_QUOTE, "F Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 77));
-		keys.add(new Key(Key.KEY_BLACK, KeyEvent.getExtendedKeyCodeForChar(']'), "F# Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 78));	
-		keys.add(new Key(Key.KEY_BLACK, KeyEvent.getExtendedKeyCodeForChar(']'), "F# Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 78));	
-		keys.add(new Key(Key.KEY_BLACK, KeyEvent.getExtendedKeyCodeForChar(']'), "F# Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 78));
-		keys.add(new Key(Key.KEY_BLACK, KeyEvent.getExtendedKeyCodeForChar(']'), "F# Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 78));*/
+		keys.add(new Key(Key.KEY_CENTER, KeyEvent.VK_X, "A Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 81));
+		keys.add(new Key(Key.KEY_BLACK, KeyEvent.VK_D, "G Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 82));
+		keys.add(new Key(Key.KEY_RIGHT, KeyEvent.VK_C, "G Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 83));
+		}
+	
+	public static void addOctave3(ArrayList<Key> keys)
+	{
+		keys.add(new Key(Key.KEY_LEFT, KeyEvent.VK_V, "G Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 84));
+		keys.add(new Key(Key.KEY_BLACK, KeyEvent.VK_G, "G Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 85));
+		keys.add(new Key(Key.KEY_CENTER, KeyEvent.VK_B, "G Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 86));
+		keys.add(new Key(Key.KEY_BLACK, KeyEvent.VK_H, "G Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 87));
+		keys.add(new Key(Key.KEY_RIGHT, KeyEvent.VK_N, "G Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 88));
+		keys.add(new Key(Key.KEY_LEFT, KeyEvent.VK_M, "G Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 89));
+		keys.add(new Key(Key.KEY_BLACK, KeyEvent.VK_K, "G Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 90));
+		keys.add(new Key(Key.KEY_CENTER, KeyEvent.getExtendedKeyCodeForChar(','), "F Key", "2", ClipLoader.loadClip("/Sound Assets/Key A_edit.wav"), 91));
+		keys.add(new Key(Key.KEY_BLACK, KeyEvent.VK_L, "G Key", "2", ClipLoader.loadClip("/Sound Assets/Key B.wav"), 91));
+		keys.add(new Key(Key.KEY_CENTER, KeyEvent.getExtendedKeyCodeForChar('.'), "F Key", "2", ClipLoader.loadClip("/Sound Assets/Key A_edit.wav"), 92));
+		keys.add(new Key(Key.KEY_BLACK, KeyEvent.getExtendedKeyCodeForChar(';'), "F Key", "2", ClipLoader.loadClip("/Sound Assets/Key A_edit.wav"), 93));
+		keys.add(new Key(Key.KEY_RIGHT, KeyEvent.getExtendedKeyCodeForChar('/'), "F Key", "2", ClipLoader.loadClip("/Sound Assets/Key A_edit.wav"), 94));
 	}
 	
 }

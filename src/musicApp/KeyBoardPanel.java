@@ -93,8 +93,58 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 	@Override
 	public void init()
 	{
+		
 		KeySets.addOctave1(super.keys);
 		KeySets.addOctave2(super.keys);
+		KeySets.addOctave3(super.keys);
+		
+		
+		for(int i = 0; i < synth.getLoadedInstruments().length; i++)
+		{
+			
+			switch(synth.getLoadedInstruments()[i].getName())
+			{
+				case "Piano":
+					System.out.println(i);
+					OptionsPanel.setInstrument("Piano", i);
+					break;
+				case "Accordion":
+					System.out.println(i);
+					OptionsPanel.setInstrument("Accordion", i);
+					break;
+					
+				case "Cello":
+					//System.out.println(i);
+					OptionsPanel.setInstrument("Cello", i);
+					break;
+					
+				case "Flute":
+					//System.out.println(i);
+					OptionsPanel.setInstrument("Flute", i);
+					break;
+				case "Harp":
+					//System.out.println(i);
+					OptionsPanel.setInstrument("Harp", i);
+					break;
+				case "Trumpet":
+					//System.out.println(i);
+					OptionsPanel.setInstrument("Trumpet", i);
+					break;
+				case "Organ":
+					//System.out.println(i);
+					OptionsPanel.setInstrument("Organ", i);
+					break;
+				case "Vibraphone":
+					//System.out.println(i);
+					OptionsPanel.setInstrument("Vibraphone", i);
+					break;
+				case "Violin":
+					//System.out.println(i);
+					OptionsPanel.setInstrument("Violin", i);
+					break;
+					
+			}
+		}
 	}
 
 	@Override
@@ -181,6 +231,7 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 	
 	public static void setTone(int instrumentNumber)
 	{
+		
 		channel.programChange(synth.getLoadedInstruments()[instrumentNumber].getPatch().getProgram());
 	}
 	
@@ -261,34 +312,35 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 		keys.get(19).flag();
 		repaint();
 		
+		
 		System.out.println(keys.get(16).getFlag());
 		
-		/*try 
-		{
-			
-			Thread.sleep(1000);
-			
-		} 
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
-		}
+	
 		
+		
+	}
+	
+	
+	public void removedPlayedChord(){
 		keys.get(12).unflag();
 		keys.get(16).unflag();
 		keys.get(19).unflag();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		repaint();
-		
-		System.out.println(keys.get(16).getFlag());*/
-		
+		System.out.println(keys.get(16).getFlag());
 	}
 
 	
 	public void playChordD(){
 		//this.keys.get(Key.KEY_LEFT, "A key");
-		keys.get(9).flag();
-		keys.get(12).flag();
-		keys.get(16).flag();
+		keys.get(14).flag();
+		keys.get(18).flag();
+		keys.get(21).flag();
 		repaint();
 	}
 	
