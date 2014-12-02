@@ -35,7 +35,9 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 	//True if the synthesizer is playing a song
 	private static boolean playingFlag = false;
 	
-	public KeyBoardPanel() throws MidiUnavailableException
+	private static KeyBoardPanel instance = new KeyBoardPanel();
+	
+	private KeyBoardPanel()
 	{
 		try
 		{
@@ -53,12 +55,24 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 		
 		super.keys = new ArrayList<Key>();
 		
-		synth = MidiSystem.getSynthesizer();
-		synth.open();
-		channel = synth.getChannels()[0];
+		try 
+		{
+			synth = MidiSystem.getSynthesizer();
+			synth.open();
+			channel = synth.getChannels()[0];
+		} 
+		catch (MidiUnavailableException e) 
+		{
+			e.printStackTrace();
+		}
 		
 		this.init();
 		repaint();
+	}
+	
+	public static KeyBoardPanel getInstance()
+	{
+		return instance;
 	}
 	
 	public static void flag()
@@ -221,4 +235,62 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 	{
 		
 	}
+	
+	public void playChordA(){
+		//this.keys.get(Key.KEY_LEFT, "A key");
+		keys.get(9).flag();
+		keys.get(12).flag();
+		keys.get(16).flag();
+		repaint();
+		
+		/*for(Key k : super.keys)
+		{
+			if(k.getAssignedKey() == e.getKeyCode())
+			{
+				k.flag();
+			}
+		}*/
+	
+	
+	}
+	
+	public void playChordC(){
+		//this.keys.get(Key.KEY_LEFT, "A key");
+		keys.get(12).flag();
+		keys.get(16).flag();
+		keys.get(19).flag();
+		repaint();
+		
+		System.out.println(keys.get(16).getFlag());
+		
+		/*try 
+		{
+			
+			Thread.sleep(1000);
+			
+		} 
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		keys.get(12).unflag();
+		keys.get(16).unflag();
+		keys.get(19).unflag();
+		repaint();
+		
+		System.out.println(keys.get(16).getFlag());*/
+		
+	}
+
+	
+	public void playChordD(){
+		//this.keys.get(Key.KEY_LEFT, "A key");
+		keys.get(9).flag();
+		keys.get(12).flag();
+		keys.get(16).flag();
+		repaint();
+	}
+	
+	
 }

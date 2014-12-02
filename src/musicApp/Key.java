@@ -47,6 +47,11 @@ public class Key
 	{
 		this.paintFlag = false;
 	}
+	
+	public boolean getFlag()
+	{
+		return this.paintFlag;
+	}
 
 	public int getType()
 	{
