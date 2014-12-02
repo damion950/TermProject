@@ -10,7 +10,6 @@ public class SliderPanel extends JPanel
 {
 	private JSlider sliderTempo, sliderVolume;
 	private JLabel lblTempo, lblVolume;
-	private static int tempo, volume;
 	
 	public SliderPanel()
 	{
@@ -23,16 +22,6 @@ public class SliderPanel extends JPanel
 		this.sliderVolume = new JSlider(0, 100, 30);
 		
 		this.init();
-	}
-	
-	public static int getTempo()
-	{
-		return tempo;
-	}
-	
-	public static int getVolume()
-	{
-		return volume;
 	}
 	
 	public void init()
@@ -53,21 +42,19 @@ public class SliderPanel extends JPanel
 		this.add(sliderVolume);
 		sliderVolume.setFocusable(false);
 		
-		tempo = sliderTempo.getValue();
 		sliderTempo.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e)
 			{
-				tempo = sliderTempo.getValue();
+				KeyBoardPanel.setTempo(sliderTempo.getValue());
 			}
 	    });
 	    
-		volume = sliderVolume.getValue();
 	    sliderVolume.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e)
 			{
-				volume = sliderVolume.getValue();
+				KeyBoardPanel.setVolume(sliderVolume.getValue());
 			}
 	    });
 		

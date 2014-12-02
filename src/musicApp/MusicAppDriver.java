@@ -8,6 +8,6 @@ public class MusicAppDriver
 {
 	public static void main(String args[]) throws IOException, InterruptedException, MidiUnavailableException
 	{
-		Window window = new Window(950, 450, "Music Window");
+		new Window(950, 450, "Music Window");
 	}
 }

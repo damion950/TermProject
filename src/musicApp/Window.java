@@ -1,12 +1,10 @@
 package musicApp;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
+import javax.swing.JFrame;
 
 import javax.sound.midi.MidiUnavailableException;
-import javax.swing.BoxLayout;
-import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
 public class Window extends JFrame

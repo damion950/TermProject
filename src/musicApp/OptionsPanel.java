@@ -11,15 +11,15 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 @SuppressWarnings("serial")
 public class OptionsPanel extends JPanel implements ActionListener
 {
 	private final String comboSongsItems[] = { "Fur Elise", "Greensleeves" };
-	private final String comboTonesItems[] = { "Piano", "Guitar" };
+	private final String comboTonesItems[] = { "Accordion", "Cello", "Flute", "Harp", "Organ", "Piano", "Trumpet",
+			"Vibraphone", "Violin"};
+	private static final int PIANO = 0, VIBRAPHONE = 11, ORGAN = 16, ACCORDION = 21, VIOLIN = 40,
+			 CELLO = 42, HARP = 46, TRUMPET = 56, FLUTE = 73;
 	private final String comboChordsItems[] = { "C Chord", "D Chord" };
 	private final String comboScalesItems[] = { "A Major", "B Major", "C Major", "D Major", "E Major", "F Major", "G Major" };
 	
@@ -31,7 +31,6 @@ public class OptionsPanel extends JPanel implements ActionListener
 	private JButton btnPlayScales;
 	private JButton btnPlayChords;
 	private JButton btnPlaySongs;
-	private JButton btnSetTones;
 	
 	private JLabel lblScales;
 	private JLabel lblChords;
@@ -52,7 +51,6 @@ public class OptionsPanel extends JPanel implements ActionListener
 		this.btnPlayScales = new JButton();
 		this.btnPlayChords = new JButton();
 		this.btnPlaySongs = new JButton();
-		this.btnSetTones = new JButton();
 		
 		this.lblScales = new JLabel();
 		this.lblChords = new JLabel();
@@ -112,24 +110,17 @@ public class OptionsPanel extends JPanel implements ActionListener
 		
 		this.comboTones.setPreferredSize(new Dimension(100, 25));
 		this.add(comboTones);
+		comboTones.setSelectedIndex(5);
 		comboTones.setFocusable(false);
-		
-		this.btnSetTones.setPreferredSize(new Dimension(60, 25));
-		this.btnSetTones.setText("Set");
-		this.add(btnSetTones);
-		btnSetTones.setFocusable(false);
-		btnSetTones.addActionListener(this);
+		comboTones.addActionListener(this);
 		
 		this.setFocusable(false);
 	}
 
 	public void actionPerformed(ActionEvent e)
 	{
-		System.out.println("Button pressed");
-		//if(e.getSource == this.someObject) {do stuff}
 		if(e.getSource() == this.btnPlaySongs)
 		{
-			System.out.println("Play songs recognized");
 			//This needs to go in a "Stop" button later, along with stopping of midi synthesizer
 			if(KeyBoardPanel.isFlagged())
 			{
@@ -137,7 +128,6 @@ public class OptionsPanel extends JPanel implements ActionListener
 				return;
 			}
 			
-			System.out.println("Doing play songs stuff..");
 			KeyBoardPanel.flag();
 			item = (String) this.comboSongs.getSelectedItem();
 			try {
@@ -152,6 +142,46 @@ public class OptionsPanel extends JPanel implements ActionListener
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}
+		else if(e.getSource() == this.comboTones)
+		{
+			int instrumentNumber = 0;
+			
+			switch((String) this.comboTones.getSelectedItem())
+			{
+				case "Accordion":
+					instrumentNumber = ACCORDION;
+					break;
+				case "Cello":
+					instrumentNumber = CELLO;
+					break;
+				case "Flute":
+					instrumentNumber = FLUTE;
+					break;
+				case "Harp":
+					instrumentNumber = HARP;
+					break;
+				case "Organ":
+					instrumentNumber = ORGAN;
+					break;
+				case "Piano":
+					instrumentNumber = PIANO;
+					break;
+				case "Trumpet":
+					instrumentNumber = TRUMPET;
+					break;
+				case "Vibraphone":
+					instrumentNumber = VIBRAPHONE;
+					break;
+				case "Violin":
+					instrumentNumber = VIOLIN;
+					break;
+				default:
+					System.err.println("Error: Invalid tone. Reverting to piano.");
+					instrumentNumber = PIANO;
+			}
+			
+			KeyBoardPanel.setTone(instrumentNumber);
 		}
 	}
 }

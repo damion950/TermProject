@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -17,9 +16,10 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
-import javax.sound.sampled.Clip;
+import javax.sound.midi.Transmitter;
 
 public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 {
@@ -27,8 +27,10 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 	private static BufferedImage KEY_CENTER_IMAGE;
 	private static BufferedImage KEY_RIGHT_IMAGE;
 	private static BufferedImage KEY_BLACK_IMAGE;
-	private Synthesizer synth;
-	private MidiChannel channel;
+	private static int volume = 30;
+	private static float tempo = (float) 1.0;
+	private static Synthesizer synth;
+	private static MidiChannel channel;
 	//True if the synthesizer is playing a song
 	private static boolean playingFlag = false;
 	
@@ -137,6 +139,8 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 			default:
 				System.err.println("Invalid combo box choice; contact an administrator.");
 		}
+		Transmitter t = sequencer.getTransmitter();
+		Receiver r = sequencer.getReceiver();
 		
 		/*This can stop all keyboard interaction until the song is done, but would be removed if highlighting
 		 * is happening instead
@@ -148,6 +152,21 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 		 * 
 		 * unflag();
 		 */
+	}
+	
+	public static void setTempo(float tempo)
+	{
+		KeyBoardPanel.tempo = tempo;
+	}
+	
+	public static void setTone(int instrumentNumber)
+	{
+		channel.programChange(synth.getLoadedInstruments()[instrumentNumber].getPatch().getProgram());
+	}
+	
+	public static void setVolume(int volume)
+	{
+		KeyBoardPanel.volume = volume;
 	}
 
 	public void keyPressed(KeyEvent e)
@@ -166,7 +185,7 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 				}
 				//k.getNote().setMicrosecondPosition(0);
 				//k.getNote().start();
-				channel.noteOn(k.getMidiNote(), SliderPanel.getVolume());
+				channel.noteOn(k.getMidiNote(), volume);
 				//channel.noteOn(k.getMidiNote(), (OptionsPanel.getVolume()) * 2);
 				k.flag();
 				repaint();
@@ -185,7 +204,7 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 			{
 				//System.out.println("You released key " + k.getName() + " in octave " + k.getOctave());
 				//k.getNote().stop();
-				channel.noteOff(k.getMidiNote(), 100);
+				channel.noteOff(k.getMidiNote(), volume);
 				k.unflag();
 				repaint();
 			}
