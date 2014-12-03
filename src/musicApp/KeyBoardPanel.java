@@ -1,6 +1,8 @@
 package musicApp;
 
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -21,8 +23,9 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Transmitter;
+import javax.swing.Timer;
 
-public class KeyBoardPanel extends InstrumentPanel implements KeyListener
+public class KeyBoardPanel extends InstrumentPanel implements KeyListener, ActionListener
 {
 	private static BufferedImage KEY_LEFT_IMAGE;
 	private static BufferedImage KEY_CENTER_IMAGE;
@@ -34,6 +37,7 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 	private static MidiChannel channel;
 	//True if the synthesizer is playing a song
 	private static boolean playingFlag = false;
+	Timer myTimer = new Timer(1000, this);
 	
 	private static KeyBoardPanel instance = new KeyBoardPanel();
 	
@@ -101,6 +105,7 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 		
 		for(int i = 0; i < synth.getLoadedInstruments().length; i++)
 		{
+			System.out.println(i +  synth.getLoadedInstruments()[i].getName());
 			
 			switch(synth.getLoadedInstruments()[i].getName())
 			{
@@ -122,17 +127,9 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 					//System.out.println(i);
 					OptionsPanel.setInstrument("Flute", i);
 					break;
-				case "Harp":
-					//System.out.println(i);
-					OptionsPanel.setInstrument("Harp", i);
-					break;
 				case "Trumpet":
 					//System.out.println(i);
 					OptionsPanel.setInstrument("Trumpet", i);
-					break;
-				case "Organ":
-					//System.out.println(i);
-					OptionsPanel.setInstrument("Organ", i);
 					break;
 				case "Vibraphone":
 					//System.out.println(i);
@@ -305,44 +302,91 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 	
 	}
 	
-	public void playChordC(){
+	public void playChord(String chord) throws InterruptedException{
 		//this.keys.get(Key.KEY_LEFT, "A key");
-		keys.get(12).flag();
-		keys.get(16).flag();
-		keys.get(19).flag();
+		
+		switch(chord)
+		{
+		
+			
+			case "C":
+				channel.noteOn(keys.get(12).getMidiNote(), volume);
+				channel.noteOn(keys.get(16).getMidiNote(), volume);
+				channel.noteOn(keys.get(19).getMidiNote(), volume);
+
+				keys.get(12).flag();
+				keys.get(16).flag();
+				keys.get(19).flag();
+				this.revalidate();
+				this.repaint();
+			
+			myTimer.start();
+				break;
+			case "D":
+				channel.noteOn(keys.get(14).getMidiNote(), volume);
+				channel.noteOn(keys.get(18).getMidiNote(), volume);
+				channel.noteOn(keys.get(21).getMidiNote(), volume);
+				keys.get(14).flag();
+				keys.get(18).flag();
+				keys.get(21).flag();
+				myTimer.start();
+				break;
+			case "E":
+				channel.noteOn(keys.get(17).getMidiNote(), volume);
+				channel.noteOn(keys.get(21).getMidiNote(), volume);
+				channel.noteOn(keys.get(24).getMidiNote(), volume);
+				keys.get(16).flag();
+				keys.get(20).flag();
+				keys.get(23).flag();
+				myTimer.start();
+				break;	
+			
+				
+				
+		}
+		
+		
+		
+		
 		repaint();
 		
-		
-		System.out.println(keys.get(16).getFlag());
-		
-	
 		
 		
 	}
 	
 	
 	public void removedPlayedChord(){
+		
+		
+		
 		keys.get(12).unflag();
 		keys.get(16).unflag();
 		keys.get(19).unflag();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+
 		
 		repaint();
 		System.out.println(keys.get(16).getFlag());
 	}
 
-	
-	public void playChordD(){
-		//this.keys.get(Key.KEY_LEFT, "A key");
-		keys.get(14).flag();
-		keys.get(18).flag();
-		keys.get(21).flag();
-		repaint();
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		keys.get(12).unflag();
+		keys.get(16).unflag();
+		keys.get(19).unflag();
+		keys.get(14).unflag();
+		keys.get(18).unflag();
+		keys.get(21).unflag();
+		keys.get(16).unflag();
+		keys.get(20).unflag();
+		keys.get(23).unflag();
+		System.out.println(keys.get(16).getFlag());
+		this.repaint();
+		
+		
 	}
+
+	
 	
 	
 }

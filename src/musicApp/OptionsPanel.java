@@ -20,11 +20,11 @@ import com.sun.corba.se.impl.oa.poa.ActiveObjectMap.Key;
 public class OptionsPanel extends JPanel implements ActionListener
 {
 	private final String comboSongsItems[] = { "Fur Elise", "Greensleeves" };
-	private final String comboTonesItems[] = { "Accordion", "Cello", "Flute", "Harp", "Organ", "Piano", "Trumpet",
+	private final String comboTonesItems[] = { "Accordion", "Cello", "Flute", "Piano", "Trumpet",
 			"Vibraphone", "Violin"};
-	private static int PIANO, VIBRAPHONE, ORGAN = 17, ACCORDION, VIOLIN,
+	private static int PIANO, VIBRAPHONE, ORGAN, ACCORDION, VIOLIN,
 			 CELLO, HARP, TRUMPET, FLUTE;
-	private final String comboChordsItems[] = { "C Chord", "D Chord" };
+	private final String comboChordsItems[] = { "C Chord", "D Chord", "E Chord"};
 	private final String comboScalesItems[] = { "A Major", "B Major", "C Major", "D Major", "E Major", "F Major", "G Major" };
 	
 	private JComboBox<String> comboScales;
@@ -57,6 +57,7 @@ public class OptionsPanel extends JPanel implements ActionListener
 				break;
 			case "Accordian":
 				ACCORDION = index;
+			
 				break;
 			case "Cello":
 				CELLO = index;
@@ -65,15 +66,13 @@ public class OptionsPanel extends JPanel implements ActionListener
 				FLUTE = index;
 				
 				break;
-			case "Harp":
-				HARP = index;
-				break;
 			case "Trumpet":
 				
 				TRUMPET = index;
 				break;
 			case "Organ":
 				ORGAN = index;
+				System.out.println("Organ index" + index);
 				break;
 			case "Vibraphone":
 					VIBRAPHONE = index;
@@ -185,13 +184,27 @@ public class OptionsPanel extends JPanel implements ActionListener
 			switch((String) this.comboChords.getSelectedItem()){
 			
 			case "C Chord":
-				ClipLoader.loadClip("/Sound Assets/A Chord.wav").start();
-				KeyBoardPanel.getInstance().playChordC();
+				try {
+					KeyBoardPanel.getInstance().playChord("C");
+				} catch (InterruptedException e2) {
+					e2.printStackTrace();
+				}
 					break;
 			case "D Chord":
-				ClipLoader.loadClip("/Sound Assets/D Chord.wav").start();
-				KeyBoardPanel.getInstance().playChordD();
+				try {
+					KeyBoardPanel.getInstance().playChord("D");
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
 				break;
+			case "E Chord":
+				try {
+					KeyBoardPanel.getInstance().playChord("E");
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				break;
+				
 			}
 				
 			
@@ -237,7 +250,6 @@ public class OptionsPanel extends JPanel implements ActionListener
 			switch((String) this.comboTones.getSelectedItem())
 			{
 				case "Accordion":
-					
 					instrumentNumber = ACCORDION;
 					//System.out.println(instrumentNumber);
 					break;
@@ -246,13 +258,6 @@ public class OptionsPanel extends JPanel implements ActionListener
 					break;
 				case "Flute":
 					instrumentNumber = FLUTE;
-					break;
-				case "Harp":
-					instrumentNumber = HARP;
-					break;
-				case "Organ":
-					instrumentNumber = ORGAN;
-					System.out.println(instrumentNumber);
 					break;
 				case "Piano":
 					instrumentNumber = PIANO;
