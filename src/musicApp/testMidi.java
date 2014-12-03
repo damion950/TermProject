@@ -13,10 +13,10 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 
-public class TestMidi {
+public class testMidi {
 
 	
-public TestMidi() throws IOException, InvalidMidiDataException
+public testMidi() throws IOException, InvalidMidiDataException
 	{
 	
 		Sequencer mySequence;
@@ -26,7 +26,7 @@ public TestMidi() throws IOException, InvalidMidiDataException
 			
 				InputStream is;
 				try {
-						is = new BufferedInputStream(new FileInputStream(new File(TestMidi.class.getResource("/Sound Assets/PianoSound.mid").toURI())));
+						is = new BufferedInputStream(new FileInputStream(new File(testMidi.class.getResource("/Sound Assets/PianoSound.mid").toURI())));
 						mySequence.setSequence(is);
 						
 						mySequence.start();

@@ -4,16 +4,17 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import javax.sound.midi.InvalidMidiDataException;
-
 import javax.sound.midi.MidiUnavailableException;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import com.sun.corba.se.impl.oa.poa.ActiveObjectMap.Key;
 
 @SuppressWarnings("serial")
 public class OptionsPanel extends JPanel implements ActionListener
@@ -129,9 +130,32 @@ public class OptionsPanel extends JPanel implements ActionListener
 
 	public void actionPerformed(ActionEvent e)
 	{
+		
+		
+		if(e.getSource() == this.btnPlayChords)
+		{
+			
+			
+			switch((String) this.comboChords.getSelectedItem()){
+			
+			case "C Chord":
+				ClipLoader.loadClip("/Sound Assets/Chord A.wav").start();
+				KeyBoardPanel.getInstance().playChordC();
+					break;
+			case "D Chord":
+				ClipLoader.loadClip("/Sound Assets/Chord A.wav").start();
+				KeyBoardPanel.getInstance().playChordD();
+				break;
+			}
+				
+			
+		}
+
+		//System.out.println("Button pressed");
 		//if(e.getSource == this.someObject) {do stuff}
 
 		//new TestMidi();
+		//System.out.println("Hellloo in actionPerformed");
 
 		if(e.getSource() == this.btnPlaySongs)
 		{

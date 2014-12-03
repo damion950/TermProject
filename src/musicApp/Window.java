@@ -2,8 +2,8 @@ package musicApp;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import javax.swing.JFrame;
 
+import javax.swing.JFrame;
 import javax.sound.midi.MidiUnavailableException;
 
 @SuppressWarnings("serial")
@@ -20,7 +20,7 @@ public class Window extends JFrame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 			
-		this.instrument = new KeyBoardPanel();
+		this.instrument = KeyBoardPanel.getInstance();
 		this.options = new OptionsPanel();
 		this.settings = new SliderPanel();
 		this.setFocusable(true);
