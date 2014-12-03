@@ -1,6 +1,8 @@
 package musicApp;
 
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -17,12 +19,12 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
-import javax.sound.midi.Transmitter;
+import javax.swing.Timer;
 
-public class KeyBoardPanel extends InstrumentPanel implements KeyListener
+@SuppressWarnings("serial")
+public class KeyBoardPanel extends InstrumentPanel implements KeyListener, ActionListener
 {
 	private static BufferedImage KEY_LEFT_IMAGE;
 	private static BufferedImage KEY_CENTER_IMAGE;
@@ -34,6 +36,7 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 	private static MidiChannel channel;
 	//True if the synthesizer is playing a song
 	private static boolean playingFlag = false;
+	Timer myTimer = new Timer(1000, this);
 	
 	private static KeyBoardPanel instance = new KeyBoardPanel();
 	
@@ -90,11 +93,59 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 		return playingFlag;
 	}
 	
+	public static float getTempo()
+	{
+		return tempo;
+	}
+	
 	@Override
 	public void init()
 	{
+		
 		KeySets.addOctave1(super.keys);
 		KeySets.addOctave2(super.keys);
+		KeySets.addOctave3(super.keys);
+		
+		//This is for tones, and does not work correctly
+		for(int i = 0; i < synth.getLoadedInstruments().length; i++)
+		{
+			//System.out.println(i +  synth.getLoadedInstruments()[i].getName());
+			//System.out.println("count: " + i + "  Name: " + synth.getLoadedInstruments()[i].getName());
+			switch(synth.getLoadedInstruments()[i].getName())
+			{
+				case "Piano":
+					System.out.println("count: " + i + "  Piano found");
+					OptionsPanel.setInstrument("Piano", i);
+					break;
+				case "Accordion":
+					System.out.println("count: " + i + "  Accordion found");
+					OptionsPanel.setInstrument("Accordion", i);
+					break;
+					
+				case "Cello":
+					System.out.println("count: " + i + "  Cello found");
+					OptionsPanel.setInstrument("Cello", i);
+					break;
+					
+				case "Flute":
+					System.out.println("count: " + i + "  Flute found");
+					OptionsPanel.setInstrument("Flute", i);
+					break;
+				case "Trumpet":
+					System.out.println("count: " + i + "  Trumpet found");
+					OptionsPanel.setInstrument("Trumpet", i);
+					break;
+				case "Vibraphone":
+					System.out.println("count: " + i + "  Vibraphone found");
+					OptionsPanel.setInstrument("Vibraphone", i);
+					break;
+				case "Violin":
+					System.out.println("count: " + i + "  Violin found");
+					OptionsPanel.setInstrument("Violin", i);
+					break;
+					
+			}
+		}
 	}
 
 	@Override
@@ -137,12 +188,13 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 	
 	//Play requested item sent from event in OptionsPanel - we may want to break this up into
 	//smaller functions later; this is just to get something working
-	public static void play(String item) throws MidiUnavailableException, IOException, InvalidMidiDataException
+	public static void play(String item, float tempo) throws MidiUnavailableException, IOException, InvalidMidiDataException
 	{
 		InputStream is = null;
 		Sequencer sequencer = MidiSystem.getSequencer();
 		
 		sequencer.open();
+		sequencer.setTempoFactor(tempo);
 		
 		switch(item)
 		{
@@ -150,7 +202,6 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 			try {
 				is = new BufferedInputStream(new FileInputStream(new File(KeyBoardPanel.class.getResource("/Sound Assets/beethoven-fur_elise.mid").toURI())));
 			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 				sequencer.setSequence(is);
@@ -159,19 +210,6 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 			default:
 				System.err.println("Invalid combo box choice; contact an administrator.");
 		}
-		Transmitter t = sequencer.getTransmitter();
-		Receiver r = sequencer.getReceiver();
-		
-		/*This can stop all keyboard interaction until the song is done, but would be removed if highlighting
-		 * is happening instead
-		 * 
-		 * while(sequencer.isRunning())
-		 * {
-		 * 		Thread.sleep(1000);
-		 * }
-		 * 
-		 * unflag();
-		 */
 	}
 	
 	public static void setTempo(float tempo)
@@ -181,6 +219,7 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 	
 	public static void setTone(int instrumentNumber)
 	{
+		
 		channel.programChange(synth.getLoadedInstruments()[instrumentNumber].getPatch().getProgram());
 	}
 	
@@ -198,15 +237,11 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 		{
 			if(k.getAssignedKey() == e.getKeyCode())
 			{
-				//System.out.println("You pressed key " + k.getName() + " in octave " + k.getOctave());
 				if(k.isFlagged())
 				{
 					return;
 				}
-				//k.getNote().setMicrosecondPosition(0);
-				//k.getNote().start();
 				channel.noteOn(k.getMidiNote(), volume);
-				//channel.noteOn(k.getMidiNote(), (OptionsPanel.getVolume()) * 2);
 				k.flag();
 				repaint();
 			}
@@ -222,8 +257,6 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 		{
 			if(k.getAssignedKey() == e.getKeyCode())
 			{
-				//System.out.println("You released key " + k.getName() + " in octave " + k.getOctave());
-				//k.getNote().stop();
 				channel.noteOff(k.getMidiNote(), volume);
 				k.unflag();
 				repaint();
@@ -234,63 +267,73 @@ public class KeyBoardPanel extends InstrumentPanel implements KeyListener
 	public void keyTyped(KeyEvent e)
 	{
 		
-	}
-	
-	public void playChordA(){
-		//this.keys.get(Key.KEY_LEFT, "A key");
-		keys.get(9).flag();
-		keys.get(12).flag();
-		keys.get(16).flag();
-		repaint();
+	}	
+
+	public void playChord(String chord) throws InterruptedException{
 		
-		/*for(Key k : super.keys)
+		switch(chord)
 		{
-			if(k.getAssignedKey() == e.getKeyCode())
-			{
-				k.flag();
-			}
-		}*/
-	
-	
-	}
-	
-	public void playChordC(){
-		//this.keys.get(Key.KEY_LEFT, "A key");
-		keys.get(12).flag();
-		keys.get(16).flag();
-		keys.get(19).flag();
-		repaint();
-		
-		System.out.println(keys.get(16).getFlag());
-		
-		/*try 
-		{
+			case "C":
+				channel.noteOn(keys.get(12).getMidiNote(), volume);
+				channel.noteOn(keys.get(16).getMidiNote(), volume);
+				channel.noteOn(keys.get(19).getMidiNote(), volume);
+
+				keys.get(12).flag();
+				keys.get(16).flag();
+				keys.get(19).flag();
+				this.revalidate();
+				this.repaint();
 			
-			Thread.sleep(1000);
-			
-		} 
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
+			myTimer.start();
+				break;
+			case "D":
+				channel.noteOn(keys.get(14).getMidiNote(), volume);
+				channel.noteOn(keys.get(18).getMidiNote(), volume);
+				channel.noteOn(keys.get(21).getMidiNote(), volume);
+				keys.get(14).flag();
+				keys.get(18).flag();
+				keys.get(21).flag();
+				myTimer.start();
+				break;
+			case "E":
+				channel.noteOn(keys.get(17).getMidiNote(), volume);
+				channel.noteOn(keys.get(21).getMidiNote(), volume);
+				channel.noteOn(keys.get(24).getMidiNote(), volume);
+				keys.get(16).flag();
+				keys.get(20).flag();
+				keys.get(23).flag();
+				myTimer.start();
+				break;		
 		}
 		
+		repaint();
+	}
+
+	public void removedPlayedChord(){		
 		keys.get(12).unflag();
 		keys.get(16).unflag();
 		keys.get(19).unflag();
+
 		repaint();
-		
-		System.out.println(keys.get(16).getFlag());*/
-		
+		System.out.println(keys.get(16).getFlag());
 	}
 
-	
-	public void playChordD(){
-		//this.keys.get(Key.KEY_LEFT, "A key");
-		keys.get(9).flag();
-		keys.get(12).flag();
-		keys.get(16).flag();
-		repaint();
-	}
-	
-	
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		if(e.getSource() == this.myTimer)
+		{
+			myTimer.stop();
+			keys.get(12).unflag();
+			keys.get(16).unflag();
+			keys.get(19).unflag();
+			keys.get(14).unflag();
+			keys.get(18).unflag();
+			keys.get(21).unflag();
+			keys.get(16).unflag();
+			keys.get(20).unflag();
+			keys.get(23).unflag();
+			this.repaint();
+		}
+	}	
 }

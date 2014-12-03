@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public abstract class InstrumentPanel extends JPanel
 {
 	protected BufferedImage instrument;

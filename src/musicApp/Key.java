@@ -1,7 +1,5 @@
 package musicApp;
 
-import javax.sound.sampled.Clip;
-
 public class Key
 {
 	public static final int KEY_LEFT = 0;
@@ -15,20 +13,15 @@ public class Key
 	private int type;
 	private int assignedKey;	
 	private int midiNote;
-	
 	private String name;
 	private String octave;
-	
-	private Clip note;
-	
 	private boolean paintFlag = false;
 	
-	public Key(int type, int assignedKey, String name, String octave, Clip note, int midiNote)
+	public Key(int type, int assignedKey, String name, String octave, int midiNote)
 	{
 		this.type = type;
 		this.name = name;
 		this.octave = octave;
-		this.note = note;
 		this.assignedKey = assignedKey;
 		this.midiNote = midiNote;
 	}
@@ -96,15 +89,5 @@ public class Key
 	public void setOctave(String octave)
 	{
 		this.octave = octave;
-	}
-
-	public Clip getNote()
-	{
-		return note;
-	}
-
-	public void setNote(Clip note)
-	{
-		this.note = note;
 	}
 }

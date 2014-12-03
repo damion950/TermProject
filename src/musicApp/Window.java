@@ -26,11 +26,6 @@ public class Window extends JFrame
 		this.setFocusable(true);
 		this.addKeyListener(this.instrument);
 		
-		/*options.setBackground(Color.GREEN);
-		instrument.setBackground(Color.YELLOW);
-		this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
-		this.add(this.options);
-		this.add(this.instrument);*/
 		this.add(this.options, BorderLayout.NORTH);
 		this.add(this.instrument, BorderLayout.CENTER);
 		this.add(this.settings, BorderLayout.SOUTH);

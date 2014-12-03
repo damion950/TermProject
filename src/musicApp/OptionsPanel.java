@@ -1,10 +1,8 @@
 package musicApp;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -14,17 +12,15 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.sun.corba.se.impl.oa.poa.ActiveObjectMap.Key;
-
 @SuppressWarnings("serial")
 public class OptionsPanel extends JPanel implements ActionListener
 {
 	private final String comboSongsItems[] = { "Fur Elise", "Greensleeves" };
-	private final String comboTonesItems[] = { "Accordion", "Cello", "Flute", "Harp", "Organ", "Piano", "Trumpet",
+	private final String comboTonesItems[] = { "Accordion", "Cello", "Flute", "Piano", "Trumpet",
 			"Vibraphone", "Violin"};
-	private static final int PIANO = 0, VIBRAPHONE = 11, ORGAN = 16, ACCORDION = 21, VIOLIN = 40,
-			 CELLO = 42, HARP = 46, TRUMPET = 56, FLUTE = 73;
-	private final String comboChordsItems[] = { "C Chord", "D Chord" };
+	private static int PIANO, VIBRAPHONE, ACCORDION, VIOLIN,
+			 CELLO, TRUMPET, FLUTE;
+	private final String comboChordsItems[] = { "C Chord", "D Chord", "E Chord"};
 	private final String comboScalesItems[] = { "A Major", "B Major", "C Major", "D Major", "E Major", "F Major", "G Major" };
 	
 	private JComboBox<String> comboScales;
@@ -42,6 +38,39 @@ public class OptionsPanel extends JPanel implements ActionListener
 	private JLabel lblTones;
 	
 	String item;
+	
+	public static void setInstrument(String instrumentName, int index)
+	{
+		switch(instrumentName)
+		{
+			case "Piano":
+				PIANO = index;
+				break;
+			case "Accordian":
+				ACCORDION = index;
+			
+				break;
+			case "Cello":
+				CELLO = index;
+				break;
+			case "Flute":
+				FLUTE = index;
+				
+				break;
+			case "Trumpet":
+				
+				TRUMPET = index;
+				break;
+			case "Vibraphone":
+					VIBRAPHONE = index;
+				break;
+			case "Violin":
+				VIOLIN = index;
+				break;
+				
+		}
+	}
+	
 	
 	public OptionsPanel()
 	{
@@ -105,15 +134,8 @@ public class OptionsPanel extends JPanel implements ActionListener
 		this.btnPlaySongs.setPreferredSize(new Dimension(60, 25));
 		this.btnPlaySongs.setText("Play");
 		this.add(btnPlaySongs);
- 
 		this.btnPlaySongs.addActionListener(this);
-		
-		
-		
-
 		btnPlaySongs.setFocusable(false);
-		btnPlaySongs.addActionListener(this);
-
 		
 		this.lblTones.setPreferredSize(new Dimension(50, 25));
 		this.lblTones.setText("Tones");
@@ -129,34 +151,35 @@ public class OptionsPanel extends JPanel implements ActionListener
 	}
 
 	public void actionPerformed(ActionEvent e)
-	{
-		
-		
+	{		
 		if(e.getSource() == this.btnPlayChords)
-		{
-			
-			
+		{		
 			switch((String) this.comboChords.getSelectedItem()){
 			
 			case "C Chord":
-				ClipLoader.loadClip("/Sound Assets/Chord A.wav").start();
-				KeyBoardPanel.getInstance().playChordC();
+				try {
+					KeyBoardPanel.getInstance().playChord("C");
+				} catch (InterruptedException e2) {
+					e2.printStackTrace();
+				}
 					break;
 			case "D Chord":
-				ClipLoader.loadClip("/Sound Assets/Chord A.wav").start();
-				KeyBoardPanel.getInstance().playChordD();
+				try {
+					KeyBoardPanel.getInstance().playChord("D");
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
 				break;
-			}
-				
-			
+			case "E Chord":
+				try {
+					KeyBoardPanel.getInstance().playChord("E");
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				break;
+			}		
 		}
-
-		//System.out.println("Button pressed");
-		//if(e.getSource == this.someObject) {do stuff}
-
-		//new TestMidi();
-		//System.out.println("Hellloo in actionPerformed");
-
+		
 		if(e.getSource() == this.btnPlaySongs)
 		{
 			//This needs to go in a "Stop" button later, along with stopping of midi synthesizer
@@ -169,7 +192,7 @@ public class OptionsPanel extends JPanel implements ActionListener
 			KeyBoardPanel.flag();
 			item = (String) this.comboSongs.getSelectedItem();
 			try {
-				KeyBoardPanel.play(item);
+				KeyBoardPanel.play(item, KeyBoardPanel.getTempo());
 			} catch (MidiUnavailableException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -190,6 +213,7 @@ public class OptionsPanel extends JPanel implements ActionListener
 			{
 				case "Accordion":
 					instrumentNumber = ACCORDION;
+					//System.out.println(instrumentNumber);
 					break;
 				case "Cello":
 					instrumentNumber = CELLO;
@@ -197,14 +221,9 @@ public class OptionsPanel extends JPanel implements ActionListener
 				case "Flute":
 					instrumentNumber = FLUTE;
 					break;
-				case "Harp":
-					instrumentNumber = HARP;
-					break;
-				case "Organ":
-					instrumentNumber = ORGAN;
-					break;
 				case "Piano":
 					instrumentNumber = PIANO;
+					
 					break;
 				case "Trumpet":
 					instrumentNumber = TRUMPET;
@@ -222,8 +241,5 @@ public class OptionsPanel extends JPanel implements ActionListener
 			
 			KeyBoardPanel.setTone(instrumentNumber);
 		}
-
 	}
-	
-
 }
